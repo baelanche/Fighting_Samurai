@@ -35,11 +35,23 @@ const player = new Fighter({
     x: 0,
     y: 0
   },
+  imageSrc: './img/character/player/Idle.png',
+  scale: 2.5,
+  framesMax: 8,
   offset: {
-    x: 0,
-    y: 0
+    x: 180,
+    y: 157
   },
-  color: 'blue'
+  sprites: {
+    idle: {
+      imageSrc: './img/character/player/Idle.png',
+      framesMax: 8
+    },
+    run: {
+      imageSrc: './img/character/player/Run.png',
+      framesMax: 8
+    }
+  }
 })
 
 const enemy = new Fighter({
@@ -55,7 +67,9 @@ const enemy = new Fighter({
     x: -50,
     y: 0
   },
-  color: 'red'
+  imageSrc: './img/character/player/Idle.png',
+  scale: 2.5,
+  framesMax: 8
 })
 
 const keys = {
@@ -80,10 +94,13 @@ function animate() {
 
   player.velocity.x = 0
 
+  player.image = player.sprites.idle.image
   if (keys.ArrowLeft.pressed && player.lastKey === 'ArrowLeft') {
     player.velocity.x = -5
+    player.image = player.sprites.run.image
   } else if (keys.ArrowRight.pressed && player.lastKey === 'ArrowRight') {
     player.velocity.x = 5
+    player.image = player.sprites.run.image
   }
 
   if (rectangularCollision({
