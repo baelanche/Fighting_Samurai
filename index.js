@@ -68,20 +68,42 @@ const player = new Fighter({
 
 const enemy = new Fighter({
   position: {
-    x: 974,
+    x: 924,
     y: 0
   },
   velocity: {
     x: 0,
     y: 0
   },
-  offset: {
-    x: -50,
-    y: 0
-  },
-  imageSrc: './img/character/player/Idle.png',
+  imageSrc: './img/character/enemy/Idle.png',
   scale: 2.5,
-  framesMax: 8
+  framesMax: 4,
+  offset: {
+    x: 215,
+    y: 157
+  },
+  sprites: {
+    idle: {
+      imageSrc: './img/character/enemy/Idle.png',
+      framesMax: 4
+    },
+    run: {
+      imageSrc: './img/character/enemy/Run.png',
+      framesMax: 8
+    },
+    jump: {
+      imageSrc: './img/character/enemy/Jump.png',
+      framesMax: 2
+    },
+    fall: {
+      imageSrc: './img/character/enemy/Fall.png',
+      framesMax: 2
+    },
+    attack1: {
+      imageSrc: './img/character/enemy/Attack1.png',
+      framesMax: 4
+    }
+  }
 })
 
 const keys = {
@@ -120,6 +142,22 @@ function animate() {
     player.switchSprite('jump')
   } else if (player.velocity.y > 0) {
     player.switchSprite('fall')
+  }
+
+  if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
+    enemy.velocity.x = -5
+    enemy.switchSprite('run')
+  } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
+    enemy.velocity.x = 5
+    enemy.switchSprite('run')
+  } else {
+    enemy.switchSprite('idle')
+  }
+
+  if (enemy.velocity.y < 0) {
+    enemy.switchSprite('jump')
+  } else if (enemy.velocity.y > 0) {
+    enemy.switchSprite('fall')
   }
 
   if (rectangularCollision({
@@ -162,7 +200,9 @@ window.addEventListener('keydown', (event) => {
       break
     case 'z':
       player.attack()
-      //enemy.attack()
+      break
+    case ' ':
+      enemy.attack()
       break
   }
 })
