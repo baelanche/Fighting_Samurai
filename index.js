@@ -63,6 +63,14 @@ const player = new Fighter({
       imageSrc: './img/character/player/Attack1.png',
       framesMax: 6
     }
+  },
+  attackBox: {
+    offset: {
+      x: 100,
+      y: 50,
+    },
+    width: 190,
+    height: 50
   }
 })
 
@@ -103,6 +111,14 @@ const enemy = new Fighter({
       imageSrc: './img/character/enemy/Attack1.png',
       framesMax: 4
     }
+  },
+  attackBox: {
+    offset: {
+      x: -170,
+      y: 50,
+    },
+    width: 170,
+    height: 50
   }
 })
 
@@ -163,19 +179,27 @@ function animate() {
   if (rectangularCollision({
         rect1: player,
         rect2: enemy
-      }) && player.isAttacking) {
+      }) && player.isAttacking && player.framesCurrent === 4) {
       player.isAttacking = false
       enemy.health -= 10
       document.querySelector('#enemyHealth').style.width = enemy.health + '%'
   }
 
+  if (player.isAttacking && player.framesCurrent === 4) {
+    player.isAttacking = false
+  }
+
   if (rectangularCollision({
         rect1: enemy,
         rect2: player
-      }) && enemy.isAttacking) {
+      }) && enemy.isAttacking && enemy.framesCurrent === 1) {
       enemy.isAttacking = false
       player.health -= 10
       document.querySelector('#playerHealth').style.width = player.health + '%'
+  }
+
+  if (enemy.isAttacking && enemy.framesCurrent === 1) {
+    enemy.isAttacking = false
   }
 
   if (enemy.health <= 0 || player.health <= 0) {
