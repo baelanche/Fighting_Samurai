@@ -66,6 +66,10 @@ const player = new Fighter({
     takeHit: {
       imageSrc: './img/character/player/Take Hit - white silhouette.png',
       framesMax: 4
+    },
+    death: {
+      imageSrc: './img/character/player/Death.png',
+      framesMax: 6
     }
   },
   attackBox: {
@@ -118,6 +122,10 @@ const enemy = new Fighter({
     takeHit: {
       imageSrc: './img/character/enemy/Take hit.png',
       framesMax: 3
+    },
+    death: {
+      imageSrc: './img/character/enemy/Death.png',
+      framesMax: 7
     }
   },
   attackBox: {
@@ -218,24 +226,31 @@ function animate() {
 animate()
 
 window.addEventListener('keydown', (event) => {
-  switch (event.key) {
-    case 'ArrowLeft':
-      keys.ArrowLeft.pressed = true
-      player.lastKey = 'ArrowLeft'
-      break
-    case 'ArrowRight':
-      keys.ArrowRight.pressed = true
-      player.lastKey = 'ArrowRight'
-      break
-    case 'ArrowUp':
-      player.velocity.y = -15
-      break
-    case 'z':
-      player.attack()
-      break
-    case ' ':
-      enemy.attack()
-      break
+  if (!player.dead) {
+    switch (event.key) {
+      case 'ArrowLeft':
+        keys.ArrowLeft.pressed = true
+        player.lastKey = 'ArrowLeft'
+        break
+      case 'ArrowRight':
+        keys.ArrowRight.pressed = true
+        player.lastKey = 'ArrowRight'
+        break
+      case 'ArrowUp':
+        player.velocity.y = -15
+        break
+      case 'z':
+        player.attack()
+        break
+    }
+  }
+
+  if (!enemy.dead) {
+    switch (event.key) {
+      case ' ':
+        enemy.attack()
+        break
+    }
   }
 })
 
